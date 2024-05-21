@@ -5,11 +5,17 @@
 #include "ButtonHandler.h"
 #include "RTCTime.h"
 
+// Define buzzer pin
+#define BUZZER_PIN 6
+
 void setup() {
   Serial.begin(115200);
   setupOledDisplay();
   setupButtons();
   setupRTC();
+
+  // Configure the buzzer pin as output
+  pinMode(BUZZER_PIN, OUTPUT);
 }
 
 void loop() {
@@ -30,6 +36,11 @@ void loop() {
     display.setCursor(0, 10);
     display.println("Set Button Pressed");
     display.display();
+
+    // Make the buzzer beep
+    tone(BUZZER_PIN, 1000); // Beep at 1000 Hz
+    delay(500);             // Beep for 500 milliseconds
+    noTone(BUZZER_PIN);     // Stop the beep
   } else if (rightButtonState) { // Right button pressed
     display.clearDisplay();
     display.setCursor(0, 10);
