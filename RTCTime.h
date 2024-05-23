@@ -25,21 +25,46 @@ void setupRTC() {
 void displayTime(Adafruit_SSD1306 &display) {
   DateTime now = rtc.now();
 
+  // Prepare time string
+  char timeStr[9]; // hh:mm:ss
+  snprintf(timeStr, sizeof(timeStr), "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
+
+  // Prepare date string
+  char dateStr[11]; // dd/mm/yyyy
+  snprintf(dateStr, sizeof(dateStr), "%02d/%02d/%04d", now.day(), now.month(), now.year());
+
+  // Clear display
   display.clearDisplay();
-  display.setCursor(0, 10);
-  display.print(now.year(), DEC);
-  display.print('/');
-  display.print(now.month(), DEC);
-  display.print('/');
-  display.print(now.day(), DEC);
-  display.print(" ");
-  display.print(now.hour(), DEC);
-  display.print(':');
-  display.print(now.minute(), DEC);
-  display.print(':');
-  display.print(now.second(), DEC);
+
+  // Set text size for time
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+
+  // Calculate position to center the time string
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(timeStr, 0, 0, &x1, &y1, &w, &h);
+  int16_t xTime = (display.width() - w) / 2;
+  int16_t yTime = (display.height() / 2) - h; // Adjust y-coordinate to add padding
+
+  // Display the time string
+  display.setCursor(xTime, yTime);
+  display.println(timeStr);
+
+  // Set text size for date
+  display.setTextSize(1);
+
+  // Calculate position to center the date string
+  display.getTextBounds(dateStr, 0, 0, &x1, &y1, &w, &h);
+  int16_t xDate = (display.width() - w) / 2;
+  int16_t yDate = yTime + h + 16; // Adjust y-coordinate to add padding
+
+  // Display the date string
+  display.setCursor(xDate, yDate);
+  display.println(dateStr);
+
+  // Display the changes
   display.display();
 }
 
 #endif // RTCTIME_H
- 
