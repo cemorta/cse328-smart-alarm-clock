@@ -33,9 +33,6 @@ void displayTime(Adafruit_SSD1306 &display) {
   char dateStr[11]; // dd/mm/yyyy
   snprintf(dateStr, sizeof(dateStr), "%02d/%02d/%04d", now.day(), now.month(), now.year());
 
-  // Clear display
-  display.clearDisplay();
-
   // Set text size for time
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);

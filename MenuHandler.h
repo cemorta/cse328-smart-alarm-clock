@@ -54,17 +54,15 @@ void displayMenu(Adafruit_SSD1306 &display) {
   
   switch (currentMenuItem) {
     case MENU_SHOW_TIME:
-      display.setCursor(0, 10);
-      display.println("1. Show Time");
       displayTime(display); // Display current time
       break;
     case MENU_SET_ALARM:
-      display.setCursor(0, 10);
+      display.setCursor(0, 0);
       display.println("2. Set Alarm");
       // Add additional display logic for setting alarm
       break;
     case MENU_SET_TIME:
-      display.setCursor(0, 10);
+      display.setCursor(0, 0);
       display.println("3. Set Time");
       // Add additional display logic for setting time
       break;
