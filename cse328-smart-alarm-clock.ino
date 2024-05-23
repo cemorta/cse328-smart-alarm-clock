@@ -5,6 +5,7 @@
 #include "ButtonHandler.h"
 #include "RTCTime.h"
 #include "BuzzerHandler.h"
+#include "MenuHandler.h"
 
 void setup() {
   Serial.begin(115200);
@@ -12,6 +13,7 @@ void setup() {
   setupButtons();
   setupRTC();
   setupBuzzer(); // Initialize the buzzer
+  setupMenu(); // Initialize the menu
 }
 
 void loop() {
@@ -21,28 +23,9 @@ void loop() {
   // Read the state of the buttons
   readButtons(leftButtonState, setButtonState, rightButtonState);
   
-  // Display different text based on button state
-  if (leftButtonState) { // Left button pressed
-    display.clearDisplay();
-    display.setCursor(0, 10);
-    display.println("Left Button Pressed");
-    display.display();
-  } else if (setButtonState) { // Set button pressed
-    display.clearDisplay();
-    display.setCursor(0, 10);
-    display.println("Set Button Pressed");
-    display.display();
-
-    // Make the buzzer beep
-    // beepBuzzer(1000, 500); // Beep at 1000 Hz for 500 milliseconds
-  } else if (rightButtonState) { // Right button pressed
-    display.clearDisplay();
-    display.setCursor(0, 10);
-    display.println("Right Button Pressed");
-    display.display();
-  } else {
-    displayTime(display); // Display current time if no button is pressed
-  }
+  // Navigate and display the menu based on button states
+  navigateMenu(leftButtonState, setButtonState, rightButtonState);
+  displayMenu(display);
 
   // Print the state of each button to the serial monitor
   Serial.print("Left Button: ");
