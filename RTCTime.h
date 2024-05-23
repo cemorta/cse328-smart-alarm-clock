@@ -8,6 +8,8 @@
 RTC_DS3231 rtc;
 
 void setupRTC() {
+  Wire.begin();
+  Wire.setClock(400000); // Set I2C frequency to 400kHz for faster communication
   // Initialize the RTC
   if (!rtc.begin()) {
     Serial.println("Couldn't find RTC");
