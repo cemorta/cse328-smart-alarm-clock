@@ -6,13 +6,14 @@
 #include "RTCTime.h"
 #include "BuzzerHandler.h"
 #include "MenuHandler.h"
+#include "AlarmHandler.h"
 
 void setup() {
   Serial.begin(115200);
   setupOledDisplay();
   setupButtons();
   setupRTC();
-  setupBuzzer(); // Initialize the buzzer
+  setupBuzzer();
   setupMenu(); // Initialize the menu
 }
 
@@ -27,14 +28,9 @@ void loop() {
   navigateMenu(leftButtonState, setButtonState, rightButtonState);
   displayMenu(display);
 
-  // Print the state of each button to the serial monitor
-  Serial.print("Left Button: ");
-  Serial.print(leftButtonState ? "Pressed" : "Not Pressed");
-  Serial.print("\tSet Button: ");
-  Serial.print(setButtonState ? "Pressed" : "Not Pressed");
-  Serial.print("\tRight Button: ");
-  Serial.println(rightButtonState ? "Pressed" : "Not Pressed");
-  
+  // Check and trigger alarm if necessary
+  checkAlarm(display, rtc);
+
   // Add a small delay to avoid spamming the serial monitor
   delay(100);
 }
