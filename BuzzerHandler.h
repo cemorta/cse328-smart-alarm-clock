@@ -18,4 +18,25 @@ void beepBuzzer(int frequency, int duration) {
   noTone(BUZZER_PIN);          // Stop the beep
 }
 
+// Function for approval sound
+void approvalSound() {
+  beepBuzzer(1000, 200); // High-pitched short beep
+}
+
+// Function for cancellation sound
+void cancellationSound() {
+  beepBuzzer(500, 200); // Low-pitched short beep
+  delay(100);
+  beepBuzzer(500, 200); // Low-pitched short beep
+}
+
+// Function for continue sound
+void continueSound() {
+  beepBuzzer(750, 100); // Medium-pitched short beep
+  delay(50);
+  beepBuzzer(750, 100); // Medium-pitched short beep
+  delay(50);
+  beepBuzzer(750, 100); // Medium-pitched short beep
+}
+
 #endif // BUZZERHANDLER_H
