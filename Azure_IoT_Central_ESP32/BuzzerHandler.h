@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // Define buzzer pin
-#define BUZZER_PIN 6
+#define BUZZER_PIN 5
 
 // Function to initialize the buzzer pin
 void setupBuzzer() {

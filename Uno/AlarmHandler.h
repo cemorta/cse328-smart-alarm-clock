@@ -3,7 +3,6 @@
 
 #include <Wire.h>
 #include <RTClib.h>
-#include "BuzzerHandler.h"  // Ensure this include if you use beepBuzzer in this file
 
 // Alarm time variables
 int alarmHour = 0;
@@ -29,7 +28,7 @@ void checkAlarm(Adafruit_SSD1306 &display, RTC_DS3231 &rtc) {
 
   DateTime now = rtc.now();
   if (now.hour() == alarmHour && now.minute() == alarmMinute) {
-    beepBuzzer(1000, 1000); // Assuming beepBuzzer handles tone and noTone internally
+    Serial.print("BUZZALARM");
     display.clearDisplay();
     display.setCursor(0, 0);
     display.println("Alarm Triggered!");

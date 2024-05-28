@@ -4,7 +4,6 @@
 #include "OLEDDisplay.h"
 #include "ButtonHandler.h"
 #include "RTCTime.h"
-#include "BuzzerHandler.h"
 #include "MenuHandler.h"
 #include "AlarmHandler.h"
 
@@ -16,7 +15,6 @@ void setup() {
   setupOledDisplay();
   setupButtons();
   setupRTC();
-  setupBuzzer();
   setupMenu(); // Initialize the menu
 }
 

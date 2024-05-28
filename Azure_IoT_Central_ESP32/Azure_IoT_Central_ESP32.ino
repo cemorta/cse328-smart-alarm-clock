@@ -55,9 +55,10 @@
 #include "AzureIoT.h"
 #include "Azure_IoT_PnP_Template.h"
 #include "iot_configs.h"
+#include "BuzzerHandler.h"
 
 /* --- Sample-specific Settings --- */
-#define SERIAL_LOGGER_BAUD_RATE 115200
+#define SERIAL_LOGGER_BAUD_RATE 57600
 #define MQTT_DO_NOT_RETAIN_MSG 0
 
 /* --- Time and NTP Settings --- */
@@ -464,18 +465,14 @@ void loop()
 
 void processAlarmData(String data) {
   if (data.startsWith("ALARMSET: ")) {
-    // Process alarm data
-    Serial.println("Processing alarm...");
-    // Additional actions based on the alarm
-
     // Extracting the time part
     String timeStr = data.substring(data.indexOf(':') + 2);  // +2 to skip the ": " after "ALARMSET"
-    Serial.println("Extracted Time: " + timeStr);
 
     // Convert String to const char* for C functions
     const char* alarm_time = timeStr.c_str();
-    
     (void)azure_pnp_send_device_info(&azure_iot, properties_request_id++, alarm_time);
+  } else if (data.startsWith("BUZZALARM")) {
+    beepBuzzer(1000, 1000);
   }
 }
 
