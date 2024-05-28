@@ -56,6 +56,7 @@
 static az_span COMMAND_NAME_TOGGLE_LED_1 = AZ_SPAN_FROM_STR("ToggleLed1");
 static az_span COMMAND_NAME_TOGGLE_LED_2 = AZ_SPAN_FROM_STR("ToggleLed2");
 static az_span COMMAND_NAME_DISPLAY_TEXT = AZ_SPAN_FROM_STR("DisplayText");
+static az_span COMMAND_NAME_CREATE_ALARM = AZ_SPAN_FROM_STR("CreateAlarm");
 #define COMMAND_RESPONSE_CODE_ACCEPTED 202
 #define COMMAND_RESPONSE_CODE_REJECTED 404
 
@@ -199,6 +200,14 @@ int azure_pnp_handle_command_request(azure_iot_t* azure_iot, command_request_t c
   {
     // The payload comes surrounded by quotes, so to remove them we offset the payload by 1 and its
     // size by 2.
+    LogInfo(
+        "OLED display: %.*s", az_span_size(command.payload) - 2, az_span_ptr(command.payload) + 1);
+    response_code = COMMAND_RESPONSE_CODE_ACCEPTED;
+  }
+  else if (az_span_is_content_equal(command.command_name, COMMAND_NAME_CREATE_ALARM))
+  {
+    char time[20];
+    az_span_to_str((char *) time, sizeof(time), command.payload);
     LogInfo(
         "OLED display: %.*s", az_span_size(command.payload) - 2, az_span_ptr(command.payload) + 1);
     response_code = COMMAND_RESPONSE_CODE_ACCEPTED;
