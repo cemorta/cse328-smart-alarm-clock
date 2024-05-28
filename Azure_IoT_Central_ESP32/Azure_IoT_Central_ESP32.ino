@@ -134,7 +134,7 @@ static int mqtt_client_init_function(
   mqtt_config.username = (const char*)az_span_ptr(mqtt_client_config->username);
 
 #ifdef IOT_CONFIG_USE_X509_CERT
-  LogInfo("MQTT client using X509 Certificate authentication");
+  // LogInfo("MQTT client using X509 Certificate authentication");
   mqtt_config.client_cert_pem = IOT_CONFIG_DEVICE_CERT;
   mqtt_config.client_key_pem = IOT_CONFIG_DEVICE_CERT_PRIVATE_KEY;
 #else // Using SAS key
@@ -148,7 +148,7 @@ static int mqtt_client_init_function(
   mqtt_config.user_context = NULL;
   mqtt_config.cert_pem = (const char*)ca_pem;
 
-  LogInfo("MQTT client target uri set to '%s'", mqtt_broker_uri);
+  // LogInfo("MQTT client target uri set to '%s'", mqtt_broker_uri);
 
   mqtt_client = esp_mqtt_client_init(&mqtt_config);
 
@@ -184,7 +184,7 @@ static int mqtt_client_deinit_function(mqtt_client_handle_t mqtt_client_handle)
   int result = 0;
   esp_mqtt_client_handle_t esp_mqtt_client_handle = (esp_mqtt_client_handle_t)mqtt_client_handle;
 
-  LogInfo("MQTT client being disconnected.");
+  // LogInfo("MQTT client being disconnected.");
 
   if (esp_mqtt_client_stop(esp_mqtt_client_handle) != ESP_OK)
   {
@@ -212,7 +212,7 @@ static int mqtt_client_subscribe_function(
     az_span topic,
     mqtt_qos_t qos)
 {
-  LogInfo("MQTT client subscribing to '%.*s'", az_span_size(topic), az_span_ptr(topic));
+  // LogInfo("MQTT client subscribing to '%.*s'", az_span_size(topic), az_span_ptr(topic));
 
   // As per documentation, `topic` always ends with a null-terminator.
   // esp_mqtt_client_subscribe returns the packet id or negative on error already, so no conversion
@@ -230,7 +230,7 @@ static int mqtt_client_publish_function(
     mqtt_client_handle_t mqtt_client_handle,
     mqtt_message_t* mqtt_message)
 {
-  LogInfo("MQTT client publishing to '%s'", az_span_ptr(mqtt_message->topic));
+  // LogInfo("MQTT client publishing to '%s'", az_span_ptr(mqtt_message->topic));
 
   int mqtt_result = esp_mqtt_client_publish(
       (esp_mqtt_client_handle_t)mqtt_client_handle,
@@ -308,7 +308,7 @@ static int base64_encode(
  */
 static void on_properties_update_completed(uint32_t request_id, az_iot_status status_code)
 {
-  LogInfo("Properties update request completed (id=%d, status=%d)", request_id, status_code);
+  // LogInfo("Properties update request completed (id=%d, status=%d)", request_id, status_code);
 }
 
 /*
@@ -316,7 +316,7 @@ static void on_properties_update_completed(uint32_t request_id, az_iot_status st
  */
 void on_properties_received(az_span properties)
 {
-  LogInfo("Properties update received: %.*s", az_span_size(properties), az_span_ptr(properties));
+  // LogInfo("Properties update received: %.*s", az_span_size(properties), az_span_ptr(properties));
 
   // It is recommended not to perform work within callbacks.
   // The properties are being handled here to simplify the sample.
@@ -334,14 +334,14 @@ static void on_command_request_received(command_request_t command)
   az_span component_name
       = az_span_size(command.component_name) == 0 ? AZ_SPAN_FROM_STR("") : command.component_name;
 
-  LogInfo(
-      "Command request received (id=%.*s, component=%.*s, name=%.*s)",
-      az_span_size(command.request_id),
-      az_span_ptr(command.request_id),
-      az_span_size(component_name),
-      az_span_ptr(component_name),
-      az_span_size(command.command_name),
-      az_span_ptr(command.command_name));
+  // LogInfo(
+  //     "Command request received (id=%.*s, component=%.*s, name=%.*s)",
+  //     az_span_size(command.request_id),
+  //     az_span_ptr(command.request_id),
+  //     az_span_size(component_name),
+  //     az_span_ptr(component_name),
+  //     az_span_size(command.command_name),
+  //     az_span_ptr(command.command_name));
 
   // Here the request is being processed within the callback that delivers the command request.
   // However, for production application the recommendation is to save `command` and process it
@@ -405,7 +405,7 @@ void setup()
   configure_azure_iot();
   azure_iot_start(&azure_iot);
 
-  LogInfo("Azure IoT client initialized (state=%d)", azure_iot.state);
+  // LogInfo("Azure IoT client initialized (state=%d)", azure_iot.state);
 }
 
 void loop()
@@ -487,23 +487,23 @@ void processAlarmData(String data) {
 /* --- System and Platform Functions --- */
 static void sync_device_clock_with_ntp_server()
 {
-  LogInfo("Setting time using SNTP");
+  // LogInfo("Setting time using SNTP");
 
   configTime(GMT_OFFSET_SECS, GMT_OFFSET_SECS_DST, NTP_SERVERS);
   time_t now = time(NULL);
   while (now < UNIX_TIME_NOV_13_2017)
   {
     delay(500);
-    Serial.print(".");
+    // Serial.print(".");
     now = time(NULL);
   }
-  Serial.println("");
-  LogInfo("Time initialized!");
+  // Serial.println("");
+  // LogInfo("Time initialized!");
 }
 
 static void connect_to_wifi()
 {
-  LogInfo("Connecting to WIFI wifi_ssid %s", wifi_ssid);
+  // LogInfo("Connecting to WIFI wifi_ssid %s", wifi_ssid);
 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -512,12 +512,12 @@ static void connect_to_wifi()
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
-    Serial.print(".");
+    // Serial.print(".");
   }
 
-  Serial.println("");
+  // Serial.println("");
 
-  LogInfo("WiFi connected, IP address: %s", WiFi.localIP().toString().c_str());
+  // LogInfo("WiFi connected, IP address: %s", WiFi.localIP().toString().c_str());
 }
 
 static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
@@ -565,7 +565,7 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_CONNECTED:
-      LogInfo("MQTT client connected (session_present=%d).", event->session_present);
+      // LogInfo("MQTT client connected (session_present=%d).", event->session_present);
 
       if (azure_iot_mqtt_client_connected(&azure_iot) != 0)
       {
@@ -574,7 +574,7 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_DISCONNECTED:
-      LogInfo("MQTT client disconnected.");
+      // LogInfo("MQTT client disconnected.");
 
       if (azure_iot_mqtt_client_disconnected(&azure_iot) != 0)
       {
@@ -583,7 +583,7 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_SUBSCRIBED:
-      LogInfo("MQTT topic subscribed (message id=%d).", event->msg_id);
+      // LogInfo("MQTT topic subscribed (message id=%d).", event->msg_id);
 
       if (azure_iot_mqtt_client_subscribe_completed(&azure_iot, event->msg_id) != 0)
       {
@@ -592,10 +592,10 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_UNSUBSCRIBED:
-      LogInfo("MQTT topic unsubscribed.");
+      // LogInfo("MQTT topic unsubscribed.");
       break;
     case MQTT_EVENT_PUBLISHED:
-      LogInfo("MQTT event MQTT_EVENT_PUBLISHED");
+      // LogInfo("MQTT event MQTT_EVENT_PUBLISHED");
 
       if (azure_iot_mqtt_client_publish_completed(&azure_iot, event->msg_id) != 0)
       {
@@ -604,7 +604,7 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_DATA:
-      LogInfo("MQTT message received.");
+      // LogInfo("MQTT message received.");
 
       mqtt_message_t mqtt_message;
       mqtt_message.topic = az_span_create((uint8_t*)event->topic, event->topic_len);
@@ -622,7 +622,7 @@ static esp_err_t esp_mqtt_event_handler(esp_mqtt_event_handle_t event)
 
       break;
     case MQTT_EVENT_BEFORE_CONNECT:
-      LogInfo("MQTT client connecting.");
+      // LogInfo("MQTT client connecting.");
       break;
     default:
       LogError("MQTT event UNKNOWN.");
@@ -639,37 +639,37 @@ static void logging_function(log_level_t log_level, char const* const format, ..
 
   ptm = gmtime(&now);
 
-  Serial.print(ptm->tm_year + UNIX_EPOCH_START_YEAR);
-  Serial.print("/");
-  Serial.print(ptm->tm_mon + 1);
-  Serial.print("/");
-  Serial.print(ptm->tm_mday);
-  Serial.print(" ");
+  // Serial.print(ptm->tm_year + UNIX_EPOCH_START_YEAR);
+  // Serial.print("/");
+  // Serial.print(ptm->tm_mon + 1);
+  // Serial.print("/");
+  // Serial.print(ptm->tm_mday);
+  // Serial.print(" ");
 
   if (ptm->tm_hour < 10)
   {
-    Serial.print(0);
+    // Serial.print(0);
   }
 
-  Serial.print(ptm->tm_hour);
-  Serial.print(":");
+  // Serial.print(ptm->tm_hour);
+  // Serial.print(":");
 
   if (ptm->tm_min < 10)
   {
-    Serial.print(0);
+    // Serial.print(0);
   }
 
-  Serial.print(ptm->tm_min);
-  Serial.print(":");
+  // Serial.print(ptm->tm_min);
+  // Serial.print(":");
 
   if (ptm->tm_sec < 10)
   {
-    Serial.print(0);
+    // Serial.print(0);
   }
 
-  Serial.print(ptm->tm_sec);
+  // Serial.print(ptm->tm_sec);
 
-  Serial.print(log_level == log_level_info ? " [INFO] " : " [ERROR] ");
+  // Serial.print(log_level == log_level_info ? " [INFO] " : " [ERROR] ");
 
   char message[256];
   va_list ap;
@@ -679,10 +679,10 @@ static void logging_function(log_level_t log_level, char const* const format, ..
 
   if (message_length < 0)
   {
-    Serial.println("Failed encoding log message (!)");
+    // Serial.println("Failed encoding log message (!)");
   }
   else
   {
-    Serial.println(message);
+    // Serial.println(message);
   }
 }
