@@ -10,10 +10,18 @@ int alarmHour = 0;
 int alarmMinute = 0;
 bool alarmSet = false;
 
+void sendTime() {
+  char buf[20];
+  sprintf(buf, "%02d:%02d:00", alarmHour, alarmMinute);
+  Serial.println(buf);
+}
+
 void setAlarmTime(int hour, int minute) {
   alarmHour = hour;
   alarmMinute = minute;
   alarmSet = true;
+  Serial.print("ALARMSET: ");
+  sendTime();
 }
 
 void checkAlarm(Adafruit_SSD1306 &display, RTC_DS3231 &rtc) {

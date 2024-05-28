@@ -47,6 +47,7 @@ void navigateMenu(bool leftButtonPressed, bool setButtonPressed, bool rightButto
         break;
       case MENU_SET_ALARM:
         openSetAlarmMenu = true; // Open the set alarm menu
+        alarmSet = false;
         alarmSettingStage = 0; // Start with setting hour
         break;
       case MENU_SET_TIME:
