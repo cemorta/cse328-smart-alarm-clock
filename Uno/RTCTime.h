@@ -6,10 +6,10 @@
 
 // Create an instance of the RTC
 RTC_DS3231 rtc;
+// Prepare time string
+char timeStr[9]; // hh:mm:ss
 
 void setupRTC() {
-  Wire.begin();
-  Wire.setClock(400000); // Set I2C frequency to 400kHz for faster communication
   // Initialize the RTC
   if (!rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -27,8 +27,6 @@ void setupRTC() {
 void displayTime(Adafruit_SSD1306 &display) {
   DateTime now = rtc.now();
 
-  // Prepare time string
-  char timeStr[9]; // hh:mm:ss
   snprintf(timeStr, sizeof(timeStr), "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
 
   // Prepare date string

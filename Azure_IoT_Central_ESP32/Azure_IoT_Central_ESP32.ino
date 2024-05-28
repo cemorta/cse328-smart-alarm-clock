@@ -455,7 +455,6 @@ void loop()
 
     if (Serial.available()) {  // Check if data is available to read
     String data = Serial.readString();  // Read the incoming data
-    Serial.println("Received: " + data);
     processAlarmData(data);
     }
 
@@ -470,7 +469,6 @@ void processAlarmData(String data) {
     // Additional actions based on the alarm
 
     // Extracting the time part
-    Serial.println(data.substring(data.indexOf(':' + 2)));
     String timeStr = data.substring(data.indexOf(':') + 2);  // +2 to skip the ": " after "ALARMSET"
     Serial.println("Extracted Time: " + timeStr);
 

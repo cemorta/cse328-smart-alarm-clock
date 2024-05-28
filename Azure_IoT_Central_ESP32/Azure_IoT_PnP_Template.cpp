@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // SPDX-License-Identifier: MIT
 
+#include <Arduino.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <cstdio>
 
 #include <az_core.h>
 #include <az_iot.h>
@@ -211,6 +213,8 @@ int azure_pnp_handle_command_request(azure_iot_t* azure_iot, command_request_t c
     LogInfo(
         "OLED display: %.*s", az_span_size(command.payload) - 2, az_span_ptr(command.payload) + 1);
     response_code = COMMAND_RESPONSE_CODE_ACCEPTED;
+    Serial.print("CREATEALARM: ");
+    Serial.println(time);
   }
   else
   {

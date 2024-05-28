@@ -10,7 +10,6 @@
 enum MenuItem {
   MENU_SHOW_TIME,
   MENU_SET_ALARM,
-  MENU_SET_TIME,
   MENU_TOTAL_ITEMS
 };
 
@@ -50,9 +49,6 @@ void navigateMenu(bool leftButtonPressed, bool setButtonPressed, bool rightButto
         alarmSet = false;
         alarmSettingStage = 0; // Start with setting hour
         break;
-      case MENU_SET_TIME:
-        // Logic for setting time
-        break;
       default:
         break;
     }
@@ -69,8 +65,6 @@ void displayMenu(Adafruit_SSD1306 &display) {
       displayTime(display); // Call displayTime function from RTCTime.h
       break;
     case MENU_SET_ALARM:
-      display.setCursor(0, 0);
-      display.println("2. Set Alarm");
       display.setCursor(0, 20);
       if (openSetAlarmMenu) {
         if (alarmSettingStage == 0) {
@@ -87,10 +81,6 @@ void displayMenu(Adafruit_SSD1306 &display) {
           display.println("Not set");
         }
       }
-      break;
-    case MENU_SET_TIME:
-      display.setCursor(0, 0);
-      display.println("3. Set Time");
       break;
     default:
       break;
