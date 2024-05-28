@@ -19,6 +19,7 @@ void setAlarmTime(int hour, int minute) {
   alarmHour = hour;
   alarmMinute = minute;
   alarmSet = true;
+  delay(2000);
   Serial.print("ALARMSET: ");
   sendTime();
 }
@@ -28,7 +29,7 @@ void checkAlarm(Adafruit_SSD1306 &display, RTC_DS3231 &rtc) {
 
   DateTime now = rtc.now();
   if (now.hour() == alarmHour && now.minute() == alarmMinute) {
-    Serial.print("BUZZALARM");
+    Serial.println("BUZZALARM");
     display.clearDisplay();
     display.setCursor(0, 0);
     display.println("Alarm Triggered!");

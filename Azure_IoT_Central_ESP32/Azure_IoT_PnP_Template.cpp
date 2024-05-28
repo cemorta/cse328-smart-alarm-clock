@@ -210,6 +210,15 @@ int azure_pnp_handle_command_request(azure_iot_t* azure_iot, command_request_t c
   {
     char time[20];
     az_span_to_str((char *) time, sizeof(time), command.payload);
+
+    // Check if the first and last characters are quotes
+    int len = strlen(time);
+    if (time[0] == '"' && time[len - 1] == '"') {
+        // Remove quotes by shifting the memory and setting a new null terminator
+        memmove(time, time + 1, len - 2);  // Shift left over the first quote
+        time[len - 2] = '\0';  // Set new null terminator after removing last quote
+    }
+    
     LogInfo(
         "OLED display: %.*s", az_span_size(command.payload) - 2, az_span_ptr(command.payload) + 1);
     response_code = COMMAND_RESPONSE_CODE_ACCEPTED;
